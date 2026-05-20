@@ -28,11 +28,6 @@ SECRET_KEY = 'django-insecure-7=2hj#e3yho)#=32e-4dk+831e+f@pp20k)=8mxfl!!)460$p!
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
-CORS_ALLOW_HEADERS = [
-    'content-type',
-    'authorization',
-    'Access-Control-Allow-Origin',
-]
 load_dotenv(dotenv_path=BASE_DIR / '.env')
 # Application definition
 
@@ -128,8 +123,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-
 ]
 
 
