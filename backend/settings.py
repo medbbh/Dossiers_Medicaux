@@ -14,25 +14,15 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+load_dotenv(dotenv_path=BASE_DIR / '.env')
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-7=2hj#e3yho)#=32e-4dk+831e+f@pp20k)=8mxfl!!)460$p!'
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
-load_dotenv(dotenv_path=BASE_DIR / '.env')
-# Application definition
-
-####### for AES-KEY #######
-load_dotenv(BASE_DIR / ".env")
 
 # Get AES_KEY from the .env file
 AES_KEY_HEX = os.getenv("AES_KEY")
