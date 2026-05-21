@@ -71,7 +71,7 @@ const Login = () => {
       try {
         const response = await AuthService.login(values);
         console.log("Login Response:", response.data);
-        navigate("/verify-otp", { state: { email: values.email } });
+        navigate("/verify-otp", { state: { email: values.email, otp: response.data.otp } });
         toast.success("Connexion réussie ! Veuillez vérifier votre OTP.");
       } catch (error) {
         if (error.response?.status === 403) {

@@ -26,6 +26,7 @@ from .models import CustomUser
 from rest_framework_simplejwt.tokens import RefreshToken
 from .serializers import CreateDoctorSerializer
 import time
+import threading
 from django.conf import settings
 from django.shortcuts import get_object_or_404
 from django.core.mail import EmailMultiAlternatives
@@ -177,12 +178,14 @@ class LoginView(APIView):
 
                 # Attach the HTML alternative content
                 msg.attach_alternative(html_content, "text/html")
-                try:
-                    msg.send(fail_silently=False)
-                except Exception as e:
-                    print(f"⚠️ Email sending failed: {e}")
-                    print(f"🔑 OTP for {email}: {otp}")
-                return Response({'message': 'OTP sent to your email', 'email': email}, status=status.HTTP_200_OK)
+                def _send():
+                    try:
+                        msg.send(fail_silently=False)
+                    except Exception as e:
+                        print(f"⚠️ Email sending failed: {e}")
+                        print(f"🔑 OTP for {email}: {otp}")
+                threading.Thread(target=_send, daemon=True).start()
+                return Response({'message': 'OTP sent to your email', 'email': email, 'otp': otp}, status=status.HTTP_200_OK)
             
             attempts = FAILED_LOGIN_ATTEMPTS.get(email, {'count': 0, 'locked_until': 0})
             attempts['count'] += 1
@@ -384,8 +387,8 @@ class CreateDoctorView(APIView):
 
             # Attach the HTML alternative content
             msg.attach_alternative(html_content, "text/html")
-            msg.send(fail_silently=False)
-            
+            threading.Thread(target=lambda: msg.send(fail_silently=True), daemon=True).start()
+
             return Response({
                 'message': 'Doctor created successfully. Registration link sent to email.',
                 'registration_link': registration_link  # Include this in response for frontend redirection

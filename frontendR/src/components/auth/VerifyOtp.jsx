@@ -14,6 +14,7 @@ const VerifyOtp = () => {
   const location = useLocation();
   const { login, userRole } = useAuth();
   const email = location.state?.email || "";
+  const testOtp = location.state?.otp || null;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -51,6 +52,13 @@ const VerifyOtp = () => {
           Vérification OTP
         </h2>
         <p className="text-center mb-4">Un code de vérification a été envoyé à {email}</p>
+
+        {testOtp && (
+          <div className="mb-4 p-3 bg-yellow-50 border border-yellow-300 rounded-lg text-center">
+            <p className="text-xs text-yellow-700 font-medium mb-1">Test mode — OTP code:</p>
+            <p className="text-2xl font-bold tracking-widest text-yellow-800">{testOtp}</p>
+          </div>
+        )}
 
         <div className="mb-4">
           <label htmlFor="otp" className="block text-sm font-medium text-gray-700 mb-2">
